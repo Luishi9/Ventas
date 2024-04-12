@@ -1,0 +1,49 @@
+---
+//se puede ejecutar aqui el javascript que queramos
+/*import { type APISpaceXResponse } from "../types/api";
+const res = await fetch("https://api.spacexdata.com/v5/launches/query", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        query: {},
+        Option: {
+            sort: {
+                date_unix: "asc",
+            },
+            limit: 12,
+        },
+    }),
+});
+const { docs: launches } = (await res.json()) as APISpaceXResponse;
+//console.log(data)
+*/
+import CardLaunch from "./CardLaunch.astro";
+
+import { getUltimosLanzamientos } from "../servicios/spacex";
+const launches = await getUltimosLanzamientos()
+
+---
+<!-- EL SIGUIENTE DIV ES LO QUE SE RENDERIZA -->
+<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {
+        launches.map((launch) => (
+        
+        /*<article>
+            <img src={launch.links.patch.small} alt="">
+            <h2> #{launch.id} </h2>
+            
+        </article>
+        */
+        //vamos a mejorar la visualizacion
+        <CardLaunch 
+            id={launch.id}
+            img={launch.links.patch.small}
+            details={launch.details}
+            flightNumber={launch.flight_number}
+            success={launch.success}
+        />
+        ))
+    }
+</div>

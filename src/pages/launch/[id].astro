@@ -1,0 +1,70 @@
+---
+/**
+ *
+ * esto es una ruta dinamica, para cuando la informacion
+ * de los lanzamientos se actualicen, no tengamos que estar actualicando
+ *
+ * este nos muestra la informacion del lanzamiento cuando le damos clic
+ * a una opcion que tenemos.
+ */
+//import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro"
+import {getLanzamientosBy} from "../../servicios/spacex"
+
+export const prerender = false
+
+const { id } = Astro.params;
+
+console.log({ id });
+
+let launch;
+if (id) {
+    launch = await getLanzamientosBy({ id });
+}
+
+
+/*
+esto e spara el modo estatico
+export async function getStaticPaths() {
+    /**
+     * llamar a una api externa para
+     * generar las ids
+     */
+/*
+    const launches = await getUltimosLanzamientos();
+
+    return launches.map((launch) => ({
+        params: { id: launch.id },
+    }));
+
+    /*
+        estatico:
+        return [
+            {params: {id: '5eb87cd9ffd86e000604b32a'}}
+        ];*/
+//}
+
+console.log(launch);
+
+/**
+ * rounded-lg border shadow-md bg-gray-800 border-gray-700
+    hover:scale-105 hover:bg-gray-700 hover:border-gray-500 transition flex
+    flex-col text-center items-center py-4
+ */
+---
+
+<Layout title={`Lanzamiento ${id}`}>
+    <article class="rounded-lg border shadow-md bg-gray-800 border-gray-700
+    hover:bg-gray-700 hover:border-gray-500 transition flex
+    flex-col text-center items-center py-4">
+        <img
+            class="w-52 h-auto"
+            src={launch?.links?.patch.small}
+            alt={launch?.name}
+        />
+        <h2 class="text-4xl text-white font-bold">
+            Launch #{launch?.flight_number}
+        </h2>
+        <p class="text-lg">{launch?.details}</p>
+    </article>
+</Layout>

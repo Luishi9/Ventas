@@ -1,5 +1,9 @@
 ---
-interface Props {
+import Header from '../components/Header.astro';
+
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props { //typescript
 	title: string;
 }
 
@@ -15,11 +19,20 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+		<!-- MOSTRAMOS LAS TRANSICIONES COMO SI FUERA UN COMPONENTE -->
+		<ViewTransitions />
+
 	</head>
-	<body>
-		<slot />
+	<body class="bg-gray-900 min-h-screen pb-32">
+		<!-- ESTO HACE QUE SIEMPRE APAREZCA EL HEADER EN LAS PAGINAS -->
+		<Header />
+		<main class="max-w-5xl px-4 m-auto">
+			<slot />
+		</main>
 	</body>
 </html>
+
 <style is:global>
 	:root {
 		--accent: 136, 58, 234;
@@ -36,6 +49,9 @@ const { title } = Astro.props;
 		font-family: system-ui, sans-serif;
 		background: #13151a;
 		background-size: 224px;
+
+		
+		color-scheme: dark light;
 	}
 	code {
 		font-family:
